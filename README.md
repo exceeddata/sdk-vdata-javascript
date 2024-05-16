@@ -18,12 +18,12 @@ The following sections demonstrates how to install and use the SDK.
 - [Contributing to EXD](#contributing-to-exd)
 
 ## System Requirement
-* Node.js (if installed via npm)
+- Node.js (if installed via npm)
 
 ## Additional Dependencies
 The following dependencies will be installed by the SDK if not already exists.
-* pako
-* fzstd
+- pako
+- fzstd
 
 ## License
 The codes in the repository are released with [MIT License](LICENSE).
@@ -50,10 +50,10 @@ Publicly available SDK classes and methods are at [API Documentation](https://ht
 
 **Import**
 To use the SDK import "exceeddata.sdk.vdata" package and the following classes:
-* VDataReaderFactory: in most cases VDataReaderFactory is all you ever need
-* VDataByteReader: use VDataByteReader if you have a vsw byte arrays and need to wrap in a data reader to VDataReaderFactory
-* VDataMeta: the metadata information of the vsw file
-* VDataFrame: the data frame of the vsw data contents
+- VDataReaderFactory: in most cases VDataReaderFactory is all you ever need
+- VDataByteReader: use VDataByteReader if you have a vsw byte arrays and need to wrap in a data reader to VDataReaderFactory
+- VDataMeta: the metadata information of the vsw file
+- VDataFrame: the data frame of the vsw data contents
 
 ## Sample Usage
 SDK is very easy to use, in most cases 7 lines of code is sufficient.
@@ -78,7 +78,7 @@ let cols = frame.cols(true); // column names
 
 
 ### PureJS Example
-
+- [vswdecode.html](src/purejs/vswdecode.html): a demo page to demonstrate how to decode vsw from an uploaded file
 
 ## Getting Help
 For usage questions, the best place to go to is [Github issues](https://github.com/exceeddata/sdk-vdata-javascript/issues). For customers of EXCEEDDATA commercial solutions, you can contact [support](mailto:support@smartsct.com) for questions or support.

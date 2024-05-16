@@ -1,0 +1,149 @@
+<!--
+     Copyright (C) 2016-2024 Smart Software for Car Technologies Inc. and EXCEEDDATA
+      https://www.smartsct.com
+      https://www.exceeddata.com
+ 
+                             MIT License
+ 
+  Permission is hereby granted, free of charge, to any person obtaining
+  a copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+ 
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+  Except as contained in this notice, the name of a copyright holder
+  shall not be used in advertising or otherwise to promote the sale, use 
+  or other dealings in this Software without prior written authorization 
+  of the copyright holder.
+ 
+  Project: A sample page on using the SDK to decode vsw data.
+  Author:  Nick Xie
+-->
+
+<script src="pako-2.0.3.js"></script>
+<script src="fzstd-0.1.0.js"></script>
+<script src="vdata-2.8.2.2.js"></script>
+<script type="text/javascript">
+  function vswdecode() {
+    // no file selected to read
+    if(document.querySelector("#file").value == '') {
+        alert('No file selected');
+        return;
+    }
+
+    let signals = document.querySelector("#signals").value;
+    if (signals && signals.trim().length > 0) {
+        splitted = signals.trim().split(',');
+        signals = []
+        for (let i = 0; i < splitted.length; ++i) {
+            if (splitted[i].trim().length > 0) {
+                signals.push(splitted[i].trim());
+            }
+        }
+    } else {
+        signals = null;
+    }
+
+    var file = document.querySelector("#file").files[0];
+
+    var fileReader = new FileReader();
+    fileReader.onload = function(e) {
+        // binary data
+        let uint8arry = new VDataByteReader(new Uint8Array(e.target.result));
+        let factory = new VDataReaderFactory();
+        factory.setDataReaders(uint8arry);
+        factory.setSignals(signals);
+        
+        let reader = rfactory.open();
+        let frame = reader.df();
+        
+        // choose one of the following mode
+        // let vals = frame.values();  //output original raw data at original frequency
+        // let vals = frame.values(densifyRowsAhead=1000); //prefill sparse data (made dense) by checking up to 1000 rows
+        // let vals = frame.values(densifyRowsAhead=1000, densifyOutputItv=100); //prefill up to 1000 rows and output at 100ms (10Hz) frequency, specify frequency requires prefill > 0
+        // let vals = frame.objects();   //faster objects() method for reading file
+        // let vals = frame.object1s();  //1-second level sampling
+
+        let vals = frame.objects();
+        let cols = frame.cols(true); //frame.cols(true) will return column names with time column at the first index
+       
+        let line = "";
+        let row = null;
+
+        for (let i = 0, s = cols.length; i < s; ++i) {
+            if ( i == 0 ) {
+                line = cols[i];
+            } else {
+                line = line + ", " + cols[i];
+            }
+        }
+
+        let str = line + "\n";
+        for (let i = 0, s = Math.min(vals.length, 10000); i < s; ++i) {
+            line = "";
+            row = vals[i];
+            for (let j = 0, t = row.length; j < t; ++j) {
+                if ( j == 0 ) {
+                    line = row[j];
+                } else if (row[j] == null) {
+                    line = line + ",";
+                } else if (row[j] instanceof Array) {
+                    line = line + ',"[' + row[j][0];
+                    for (let k = 1, u = row[j].length; k < u; ++k) {
+                        line = line + "," + row[j][k];
+                    } 
+                    line = line + ']';
+                } else if (row[j] instanceof Map) {
+                    line = line + ',"{';
+                    let cnt = 0;
+                    for (const [k, v] of row[j].entries()) {
+                        if (cnt > 0) {
+                            line = line + ",'" + k + "':'" + v + "'";
+                        } else {
+                            line = line + "'" + k + "':'" + v + "'";
+                        }
+                        cnt = cnt + 1;
+                    } 
+                    line = line + '}"';
+                } else {
+                    line = line + "," + row[j];
+                }
+            }
+            str = str + line + "\n";
+        }
+
+
+        document.getElementById("file-content").innerHTML = str;
+    };
+
+    fileReader.onerror = function(e) {
+        // error occurred
+        console.log('Error : ' + e.type);
+    };
+    fileReader.readAsArrayBuffer(file);
+}
+</script>
+<html>
+ <p>
+ This is a demo page to display vsw data. Upload a vsw file and optionally select signals if needed.
+ </p>
+ <hr/>
+ <input type="file" id="file" />
+ <span>select signals</span><input type="text" id="signals" style="width:200;" />
+ <button id="read-file" onclick="vswdecode()">Read File</button>
+ <p></p>
+ <textarea id="file-content" style="width: 100%; height: 80%; max-width: 100%;"></textarea>
+</html>
