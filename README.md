@@ -27,7 +27,7 @@ The following dependencies will be installed by the SDK if not already exists.
 
 ## License
 The codes in the repository are released with [MIT License](LICENSE).
-    - Thirdparty library licenses are included [here](licenses/)
+- Thirdparty library licenses are included [here](licenses/)
 
 ## Installation
 Binary installers for the latest released version are available at the NPM public registry and may be installed using npm install command.  Pure javascript is available upon request.
