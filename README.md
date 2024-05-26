@@ -47,7 +47,7 @@ npm install exceeddata-sdk-vdata
 ```
 
 ## API Documentation
-Publicly available SDK classes and methods are at [API Documentation](https://htmlpreview.github.io/?https://github.com/exceeddata/sdk-vdata-javascript/blob/main/doc/index.html).
+Publicly available SDK classes and methods are at [API Documentation](https://htmlpreview.github.io/?https://github.com/exceeddata/sdk-vdata-javascript/blob/main/doc/index.html).  [Backup Link ](https://exdfiles.cn-sh2.ufileos.com/vdata_sdk/docs/js/index.html)
 
 **Import**
 To use the SDK import "exceeddata.sdk.vdata" package and the following classes:
@@ -84,7 +84,9 @@ var fzstd= require('../src/fzstd-0.1.0.js');
 
 var ab= fs.readFileSync('testvswfile/signal_2x2.vsw.vsw');
 let reader = new  vdata.VDataByteReader(ab);
-let vreader = new  vdata.VDataReader([reader]);
+let factory = new VDataReaderFactory();
+factory.setDataReaders([reader]);
+let vreader = new  vdata.VDataReader();
 let frame = vreader.df();
 let vals = frame.objects();
 
@@ -92,7 +94,8 @@ let vals = frame.objects();
 
 
 ### PureJS Example
-- [vswdecode.html](src/purejs/vswdecode.html): a demo page to demonstrate how to decode vsw from an uploaded file
+- [vswdecode.html](src/purejs/vswdecode.html): a demo page to demonstrate how to decode vsw from an uploaded file. [Preview Online ](https://exdfiles.cn-sh2.ufileos.com/vdata_sdk/js_demo/vswdecode.html)
+- vsw2blf, vsw2asc is not opensource in javascript. It will be provided in EXCEEDDATA commercial solutions.
 
 ## Getting Help
 For usage questions, the best place to go to is [Github issues](https://github.com/exceeddata/sdk-vdata-javascript/issues). For customers of EXCEEDDATA commercial solutions, you can contact [support](mailto:support@smartsct.com) for questions or support.
