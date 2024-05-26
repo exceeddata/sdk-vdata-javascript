@@ -76,6 +76,19 @@ let cols = frame.cols(true); // column names
 
 ## Complete Examples
 ### NodeJS Example
+```
+const vdata = require ('../src/vdata-2.8.3.js');
+const fs = require('fs');
+var pako= require('../src/pako-2.0.3.js');
+var fzstd= require('../src/fzstd-0.1.0.js');
+
+var ab= fs.readFileSync('testvswfile/signal_2x2.vsw.vsw');
+let reader = new  vdata.VDataByteReader(ab);
+let vreader = new  vdata.VDataReader([reader]);
+let frame = vreader.df();
+let vals = frame.objects();
+
+```
 
 
 ### PureJS Example

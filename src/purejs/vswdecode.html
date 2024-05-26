@@ -35,7 +35,7 @@
 
 <script src="pako-2.0.3.js"></script>
 <script src="fzstd-0.1.0.js"></script>
-<script src="vdata-2.8.2.2.js"></script>
+<script src="vdata-2.8.3-min.js"></script>
 <script type="text/javascript">
   function vswdecode() {
     // no file selected to read
@@ -55,6 +55,15 @@
         }
     } else {
         signals = null;
+    }
+
+    let interval = parseInt(document.querySelector("#interval").value);
+    if (interval == NaN){
+        interval = 0;
+    }
+    let rowsahead = parseInt(document.querySelector("#rowsahead").value);
+    if (rowsahead ==NaN ){
+        rowsahead =0;
     }
 
     var file = document.querySelector("#file").files[0];
@@ -77,7 +86,7 @@
         // let vals = frame.objects();   //faster objects() method for reading file
         // let vals = frame.object1s();  //1-second level sampling
 
-        let vals = frame.objects();
+        let vals = frame.objects(interval, rowsahead);
         let cols = frame.cols(true); //frame.cols(true) will return column names with time column at the first index
        
         let line = "";
@@ -143,6 +152,8 @@
  <hr/>
  <input type="file" id="file" />
  <span>select signals</span><input type="text" id="signals" style="width:200;" />
+ <span>densify interval</span><input type="text" id="interval" style="width:200;" />
+ <span>densify rowsahead</span><input type="text" id="rowsahead" style="width:200;" />
  <button id="read-file" onclick="vswdecode()">Read File</button>
  <p></p>
  <textarea id="file-content" style="width: 100%; height: 80%; max-width: 100%;"></textarea>
