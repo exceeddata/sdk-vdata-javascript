@@ -58,11 +58,11 @@
     }
 
     let interval = parseInt(document.querySelector("#interval").value);
-    if (interval == NaN){
+    if (isNaN(interval)){
         interval = 0;
     }
     let rowsahead = parseInt(document.querySelector("#rowsahead").value);
-    if (rowsahead ==NaN ){
+    if (isNaN(rowsahead )){
         rowsahead =0;
     }
 
@@ -86,7 +86,8 @@
         // let vals = frame.objects();   //faster objects() method for reading file
         // let vals = frame.object1s();  //1-second level sampling
 
-        let vals = frame.objects(interval, rowsahead);
+        let vals = frame.objects(rowsahead,interval);
+        //let vals = frame.objects();
         let cols = frame.cols(true); //frame.cols(true) will return column names with time column at the first index
        
         let line = "";
