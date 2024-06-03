@@ -1,0 +1,17 @@
+{
+  "name": "vdata-nodejs-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test-c": "jest --coverage"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "vdatashj": "^0.0.3"
+  }
+}

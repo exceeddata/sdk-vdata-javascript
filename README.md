@@ -76,19 +76,62 @@ let cols = frame.cols(true); // column names
 
 ## Complete Examples
 ### NodeJS Example
+- [Nodejs Example](nodejs): A simple demo application to decode the VSW file with a unit test case. 
 ```
-const vdata = require ('../src/vdata-2.8.3.js');
-const fs = require('fs');
-var pako= require('../src/pako-2.0.3.js');
-var fzstd= require('../src/fzstd-0.1.0.js');
+%cd nodejs
+%npm install 
+% yarn test 
+yarn run v1.22.22
+$ jest
+  console.log
+    file format verion: 26
 
-var ab= fs.readFileSync('testvswfile/signal_2x2.vsw.vsw');
-let reader = new  vdata.VDataByteReader(ab);
-let factory = new VDataReaderFactory();
-factory.setDataReaders([reader]);
-let vreader = new  vdata.VDataReader();
-let frame = vreader.df();
-let vals = frame.objects();
+      at VDataDecoder.initialize (node_modules/vdatashj/lib/index.js:20:72004)
+
+  console.log
+    file bucket count: 1
+
+      at VDataDecoder.initialize (node_modules/vdatashj/lib/index.js:20:72054)
+
+  console.log
+    file query start time: 0
+
+      at VDataDecoder.initialize (node_modules/vdatashj/lib/index.js:20:72123)
+
+  console.log
+    file query end time: 0
+
+      at VDataDecoder.initialize (node_modules/vdatashj/lib/index.js:20:72190)
+
+  console.log
+    Add bucket [object {cycle=0, start=1010, end=1990, living=0, notime=0}]
+
+      at Function.sortAllBucketForSingleQueueMode (node_modules/vdatashj/lib/index.js:20:80469)
+
+  console.log
+    Add decoder [object {start=1010, end=1990, buckets=1, keys=3}]
+
+      at Function.sortAddDecoder (node_modules/vdatashj/lib/index.js:20:21272)
+
+  console.log
+    Add bucket [object {cycle=0, start=1010, end=1990, living=0, notime=0}]
+
+      at Function.sortAllBucketForSingleQueueMode (node_modules/vdatashj/lib/index.js:20:80469)
+
+  console.log
+    [ 'time', 'Signal_10Hz', 'Signal_100Hz', 'Signal_20Hz' ]
+
+      at Object.log [as vswdecode] (vdata.js:11:16)
+
+ PASS  test/vdata.test.js
+  ✓ simple decode test (21 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.21 s
+Ran all test suites.
+✨  Done in 0.83s.
 
 ```
 
